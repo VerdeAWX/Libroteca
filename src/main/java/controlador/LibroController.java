@@ -1,0 +1,3 @@
+package controlador;
+import dao.LibroDAO;import modelo.Libro;import java.sql.SQLException;import java.util.List;
+public class LibroController {private final LibroDAO dao=new LibroDAO();public List<Libro> listar()throws SQLException{return dao.listar();}public void guardar(Libro l)throws SQLException{validar(l);dao.guardar(l);}public void actualizar(Libro l)throws SQLException{validar(l);dao.actualizar(l);}public void eliminar(int id)throws SQLException{dao.eliminar(id);}private void validar(Libro l){if(l.getTitulo().isBlank()||l.getAutor().isBlank()||l.getIsbn().isBlank()||l.getEditorial().isBlank())throw new IllegalArgumentException("Completa todos los campos del libro.");if(l.getStock()<0)throw new IllegalArgumentException("El stock no puede ser negativo.");}}

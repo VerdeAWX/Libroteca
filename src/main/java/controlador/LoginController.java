@@ -1,0 +1,3 @@
+package controlador;
+import dao.UsuarioDAO;import modelo.Usuario;import java.sql.SQLException;
+public class LoginController {private final UsuarioDAO dao=new UsuarioDAO();public Usuario login(String correo,String clave)throws SQLException{if(correo==null||correo.isBlank()||clave==null||clave.isBlank())throw new IllegalArgumentException("Ingresa correo y contraseña.");return dao.autenticar(correo.trim(),clave);}}

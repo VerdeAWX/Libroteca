@@ -1,0 +1,9 @@
+package dao;
+import conexion.DatabaseConnection;import modelo.Estudiante;import java.sql.*;import java.util.*;
+public class EstudianteDAO {
+ public List<Estudiante> listar() throws SQLException {List<Estudiante> a=new ArrayList<>();try(Connection c=DatabaseConnection.getInstance().getConnection();PreparedStatement p=c.prepareStatement("SELECT id,nombre,rut,curso,correo FROM estudiantes ORDER BY nombre");ResultSet r=p.executeQuery()){while(r.next())a.add(map(r));}return a;}
+ private Estudiante map(ResultSet r)throws SQLException{return new Estudiante(r.getInt("id"),r.getString("nombre"),r.getString("rut"),r.getString("curso"),r.getString("correo"));}
+ public void guardar(Estudiante e)throws SQLException {String s="INSERT INTO estudiantes(nombre,rut,curso,correo) VALUES(?,?,?,?)";try(Connection c=DatabaseConnection.getInstance().getConnection();PreparedStatement p=c.prepareStatement(s)){p.setString(1,e.getNombre());p.setString(2,e.getRut());p.setString(3,e.getCurso());p.setString(4,e.getCorreo());p.executeUpdate();}}
+ public void actualizar(Estudiante e)throws SQLException {String s="UPDATE estudiantes SET nombre=?,rut=?,curso=?,correo=? WHERE id=?";try(Connection c=DatabaseConnection.getInstance().getConnection();PreparedStatement p=c.prepareStatement(s)){p.setString(1,e.getNombre());p.setString(2,e.getRut());p.setString(3,e.getCurso());p.setString(4,e.getCorreo());p.setInt(5,e.getId());if(p.executeUpdate()==0)throw new SQLException("Estudiante no encontrado");}}
+ public void eliminar(int id)throws SQLException {try(Connection c=DatabaseConnection.getInstance().getConnection();PreparedStatement p=c.prepareStatement("DELETE FROM estudiantes WHERE id=?")){p.setInt(1,id);p.executeUpdate();}}
+}
